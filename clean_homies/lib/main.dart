@@ -4,6 +4,8 @@ void main() {
   runApp(MyApp());
 }
 
+// background tasks: https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
