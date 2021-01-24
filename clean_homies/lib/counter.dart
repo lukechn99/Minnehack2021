@@ -22,6 +22,7 @@ class GermCounterState extends State<GermCounter> {
     super.initState();
     timer = Timer.periodic(Duration(seconds: 10), (Timer t) => _germCounter());
   }
+
   @override
   void dispose() {
     timer?.cancel();
@@ -57,32 +58,31 @@ class GermCounterState extends State<GermCounter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CircularPercentIndicator(
-            radius: 150.0,
-            lineWidth: 13.0,
-            animation: true,
-            percent: _percent,
-            center: new Text(
-              _counter.toInt().toString() + " germs",
-              style:
-              new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-            ),
-            circularStrokeCap: CircularStrokeCap.round,
-            progressColor: progress,
-          ),
-          ElevatedButton(
-            child: Text('Washed Hands!'),
-            onPressed: () {
-              _washedHands();
-            },
-          )
-        ]
-      )
-    );
+        margin: EdgeInsets.all(14.0),
+        padding: EdgeInsets.all(8.0),
+        alignment: Alignment.center,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularPercentIndicator(
+                radius: 150.0,
+                lineWidth: 13.0,
+                animation: true,
+                percent: _percent,
+                center: new Text(
+                  _counter.toInt().toString() + " germs",
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 15.0),
+                ),
+                circularStrokeCap: CircularStrokeCap.round,
+                progressColor: progress,
+              ),
+              ElevatedButton(
+                child: Text('Washed Hands!'),
+                onPressed: () {
+                  _washedHands();
+                },
+              )
+            ]));
   }
 }
