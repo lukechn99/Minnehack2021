@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 // import 'package:clean_homies/background_task.dart';
 import 'package:location/location.dart';
+import 'package:workmanager/workmanager.dart';
+
+void callbackDispatcher() {
+  Workmanager.executeTask((task, input) async {
+    getLocation();
+    return Future.value(true);
+  });
+}
 
 void main() {
+  Workmanager.initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode:
+          true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+      );
+  Workmanager.registerOneOffTask("1", "simpleTask"); //Android only
+
   runApp(MyApp());
 }
 

@@ -17,6 +17,10 @@ void main() {
   runApp(MyApp());
 }
 
+/*
+ * Important for background tasks. The 
+ * 
+ */
 void callbackDispatcher() {
   Workmanager.executeTask((task) {
     switch (task) {
