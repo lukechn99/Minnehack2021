@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "143439331173",
+    "project_id": "clean-homies",
+    "storage_bucket": "clean-homies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143439331173:android:b52c614fa893f67219ab8c",
+        "android_client_info": {
+          "package_name": "com.example.clean_homies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143439331173-opmsv8jbn53ldvbui4qd8d9iuinbse3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0vtTYvjAXsa8zE2XbpVp2aANkN5wSek4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143439331173-opmsv8jbn53ldvbui4qd8d9iuinbse3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
