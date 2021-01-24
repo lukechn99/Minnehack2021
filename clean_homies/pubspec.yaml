@@ -27,6 +27,7 @@ dependencies:
   # for gathering location data
   location: ^3.0.0
   workmanager: ^0.2.3
+  path_provider: ^1.6.27
 
 
   # The following adds the Cupertino Icons font to your application.

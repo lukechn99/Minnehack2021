@@ -3,6 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:workmanager/workmanager.dart';
 
+void getLocation() async {
+  LocationData currentLocation;
+  var location = new Location();
+  try {
+    currentLocation = await location.getLocation();
+  } on Exception catch (e) {
+    print("Error obtaining location: $e");
+    currentLocation = null;
+  }
+  print("Location altitude: ${currentLocation.altitude}");
+  print("Location longitude: ${currentLocation.longitude}");
+}
+
 void callbackDispatcher() {
   Workmanager.executeTask((task, input) async {
     getLocation();
