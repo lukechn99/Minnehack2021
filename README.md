@@ -1,4 +1,4 @@
-# Minnehack2021
+# NoCorona
 
 ### Germ Tracker
 Apps keep track of our steps; Apple map keeps track of everything including our “home,” “parking location,” etc. Pokemon Go. Rewards. Idek. 
