@@ -24,7 +24,7 @@ Notifications/settings page with personal configuration options
 - Flutter
 - Maps API (Google or Apple)
 - Firebase
-- pubdev
+- pubdev (workmanager, location)
 
 ### Further extensions:
 - It could include a timer for hand-washing
@@ -32,8 +32,16 @@ Notifications/settings page with personal configuration options
 
 It could have two different options for people who feel uncomfortable with the app tracking location. One: a more accurate, location tracking option. And two: a less accurate, time-based option. (Counts the number of germs based on time since the last hand wash?)
 
-## Contributions
+### Contributions
 Ben Wagrez:  
 Luke Chen:  notifications
 Melody Liu:  germ tracker
 Orien Zhang:  UI, fact banners, 
+
+### Resources
+https://medium.com/@mx_tino/flutter-themes-9cebc0fecd1d
+https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
+https://stackoverflow.com/questions/60262425/how-to-make-flutter-workmanager-plugin-and-location-plugin-work-together
+https://mightytechno.com/flutter-app-bar/
+https://www.geeksforgeeks.org/background-local-notifications-in-flutter/
+https://medium.com/flutterdevs/local-push-notification-in-flutter-763605b84985
