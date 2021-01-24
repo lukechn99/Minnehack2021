@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+// import 'package:clean_homies/background_task.dart';
+import 'package:location/location.dart';
+import 'counter.dart';
 
 void main() {
   runApp(MyApp());
 }
+
+// background tasks: https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Clean Homies'),
     );
   }
 }
@@ -46,16 +51,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  double latitude = 0;
+  double longitude = 0;
 
-  void _incrementCounter() {
+  void _getLocation() async {
+    // grab location
+
+    Location location = new Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      latitude = _locationData.latitude;
+      longitude = _locationData.longitude;
     });
   }
 
@@ -93,21 +119,23 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            GermCounter(),
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
+              '$latitude',
               style: Theme.of(context).textTheme.headline4,
             ),
-          ],
-        ),
+            Text(
+              '$longitude',
+              style: Theme.of(context).textTheme.headline4,
+            )
+          ]
+        )
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _getLocation,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
