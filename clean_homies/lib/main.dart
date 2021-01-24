@@ -10,12 +10,8 @@ void main() {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
   Workmanager.initialize(
-
       // The top level function, aka callbackDispatcher
       callbackDispatcher,
-
-      // If enabled it will post a notification whenever
-      // the task is running. Handy for debugging tasks
       isInDebugMode: true);
   // Periodic task registration
   Workmanager.registerPeriodicTask(
@@ -23,14 +19,13 @@ void main() {
 
     //This is the value that will be
     // returned in the callbackDispatcher
-    "simplePeriodicTask",
-
-    // When no frequency is provided
-    // the default 15 minutes is set.
-    // Minimum frequency is 15 min.
-    // Android will automatically change
-    // your frequency to 15 min
-    // if you have configured a lower frequency.
+    "checkLocation",
+    constraints: Constraints(
+        networkType: NetworkType.connected,
+        requiresBatteryNotLow: true,
+        requiresCharging: false,
+        requiresDeviceIdle: false,
+        requiresStorageNotLow: false),
     frequency: Duration(seconds: 10),
   );
   runApp(MyApp());
@@ -38,19 +33,24 @@ void main() {
 
 void callbackDispatcher() {
   Workmanager.executeTask((task, inputData) {
-    // initialise the plugin of flutterlocalnotifications.
-    FlutterLocalNotificationsPlugin flip =
-        new FlutterLocalNotificationsPlugin();
+    // get location
+    Future<LocationData> location = _getLocation();
+    // if correct location
+    if (location.latitude == 0.0 and location.longitude == 0.0) {
+      // initialise the plugin of flutterlocalnotifications.
+      FlutterLocalNotificationsPlugin flip =
+          new FlutterLocalNotificationsPlugin();
 
-    // app_icon needs to be a added as a drawable
-    // resource to the Android head project.
-    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var IOS = new IOSInitializationSettings();
+      // app_icon needs to be a added as a drawable
+      // resource to the Android head project.
+      var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+      var IOS = new IOSInitializationSettings();
 
-    // initialise settings for both Android and iOS device.
-    var settings = new InitializationSettings(android, IOS);
-    flip.initialize(settings);
-    _showNotificationWithDefaultSound(flip);
+      // initialise settings for both Android and iOS device.
+      var settings = new InitializationSettings(android, IOS);
+      flip.initialize(settings);
+      _showNotificationWithDefaultSound(flip);
+    }
     return Future.value(true);
   });
 }
@@ -71,6 +71,32 @@ Future _showNotificationWithDefaultSound(flip) async {
       payload: 'Default_Sound');
 }
 
+Future<LocationData> _getLocation() async {
+  // grab location
+
+  Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+    if (!_serviceEnabled) {
+      return null;
+    }
+  }
+  _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.denied) {
+    _permissionGranted = await location.requestPermission();
+    if (_permissionGranted != PermissionStatus.granted) {
+      return null;
+    }
+  }
+
+  _locationData = await location.getLocation();
+  return _locationData;
+}
+
 // background tasks: https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
 
 class MyApp extends StatelessWidget {
@@ -78,7 +104,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'NoCorona',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
