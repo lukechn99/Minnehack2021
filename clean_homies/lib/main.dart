@@ -1,10 +1,72 @@
 import 'package:flutter/material.dart';
-// import 'package:clean_homies/background_task.dart';
 import 'package:location/location.dart';
 import 'counter.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:workmanager/workmanager.dart';
 
 void main() {
+  // needed if you intend to initialize in the `main` function
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager.initialize(
+
+      // The top level function, aka callbackDispatcher
+      callbackDispatcher,
+
+      // If enabled it will post a notification whenever
+      // the task is running. Handy for debugging tasks
+      isInDebugMode: true);
+  // Periodic task registration
+  Workmanager.registerPeriodicTask(
+    "2",
+
+    //This is the value that will be
+    // returned in the callbackDispatcher
+    "simplePeriodicTask",
+
+    // When no frequency is provided
+    // the default 15 minutes is set.
+    // Minimum frequency is 15 min.
+    // Android will automatically change
+    // your frequency to 15 min
+    // if you have configured a lower frequency.
+    frequency: Duration(seconds: 10),
+  );
   runApp(MyApp());
+}
+
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) {
+    // initialise the plugin of flutterlocalnotifications.
+    FlutterLocalNotificationsPlugin flip =
+        new FlutterLocalNotificationsPlugin();
+
+    // app_icon needs to be a added as a drawable
+    // resource to the Android head project.
+    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var IOS = new IOSInitializationSettings();
+
+    // initialise settings for both Android and iOS device.
+    var settings = new InitializationSettings(android, IOS);
+    flip.initialize(settings);
+    _showNotificationWithDefaultSound(flip);
+    return Future.value(true);
+  });
+}
+
+Future _showNotificationWithDefaultSound(flip) async {
+  // Show a notification after every 15 minute with the first
+  // appearance happening a minute after invoking the method
+  var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+      'your channel id', 'your channel name', 'your channel description',
+      importance: Importance.Max, priority: Priority.High);
+  var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+
+  // initialise channel platform for both Android and iOS device.
+  var platformChannelSpecifics = new NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flip.show(
+      0, 'Welcome Home', 'Go wash your hands', platformChannelSpecifics,
+      payload: 'Default_Sound');
 }
 
 // background tasks: https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
@@ -94,48 +156,32 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GermCounter(),
-            Text(
-              '$latitude',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Text(
-              '$longitude',
-              style: Theme.of(context).textTheme.headline4,
-            )
-          ]
-        )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _getLocation,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ) // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              GermCounter(),
+              Text(
+                '$latitude',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              Text(
+                '$longitude',
+                style: Theme.of(context).textTheme.headline4,
+              )
+            ])),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _getLocation,
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ) // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
