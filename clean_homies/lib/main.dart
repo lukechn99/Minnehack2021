@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:clean_homies/background_task.dart';
 import 'package:location/location.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -51,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _counter = 1;
+  double _counter = 50000;
   double _percent = 0;
   double latitude = 0;
   double longitude = 0;
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter *= 1.5;
+      _counter *= 1.0353;
       _percent = _counter / 5000000;
       if (_percent < 0.25) {
         progress = Colors.green;
@@ -81,9 +82,23 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Timer timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 60), (Timer t) => _incrementCounter());
+  }
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   void _washedHands() {
-    _counter = _counter * 0.01;
-    _percent = 0;
+    setState(() {
+      _counter = 50000;
+      _percent = 0;
+    });
   }
 
   void _getLocation() async {
