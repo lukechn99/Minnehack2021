@@ -39,9 +39,9 @@ Melody Liu: germ tracker
 Orien Zhang: UI, fact banners  
 
 ### Resources
-https://medium.com/@mx_tino/flutter-themes-9cebc0fecd1d
-https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e
-https://stackoverflow.com/questions/60262425/how-to-make-flutter-workmanager-plugin-and-location-plugin-work-together
-https://mightytechno.com/flutter-app-bar/
-https://www.geeksforgeeks.org/background-local-notifications-in-flutter/
-https://medium.com/flutterdevs/local-push-notification-in-flutter-763605b84985
+https://medium.com/@mx_tino/flutter-themes-9cebc0fecd1d  
+https://medium.com/vrt-digital-studio/flutter-workmanager-81e0cfbd6f6e  
+https://stackoverflow.com/questions/60262425/how-to-make-flutter-workmanager-plugin-and-location-plugin-work-together  
+https://mightytechno.com/flutter-app-bar/  
+https://www.geeksforgeeks.org/background-local-notifications-in-flutter/  
+https://medium.com/flutterdevs/local-push-notification-in-flutter-763605b84985  
