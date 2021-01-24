@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:convert';
 // provides path where we will store JSON file
 import 'package:path_provider/path_provider.dart';
+import 'package:location/location.dart';
 
 const String filename = 'storage.json';
 
@@ -75,9 +76,9 @@ class Datastore extends State<Storage> {
       // file does not exist, so create file
       createFile(content, dir, fileName);
     }
-
-    void logTrip(Location location)
   }
+
+  void logTrip(Location location) {}
 }
 
 /*
