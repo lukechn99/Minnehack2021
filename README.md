@@ -16,14 +16,15 @@ Nuances: 1) We can even have settings that change notifications 2) maybe we can 
 - It should alert the user when they reach a frequently visited place
 - It should distinguish between safe and possibly less safe activities-- (driving is pretty safe). 
 - It should have a 
-Facts page  
-‘Your data’ page  
-Handwashing timer page  
-Notifications/settings page  
+Home page with quick facts, germs accumulated since last handwash, and a handwash button  
+‘Your data’ page with aggregated handwashing and germ accumulation data  
+Notifications/settings page with personal configuration options  
   
 ### Tools:
 - Flutter
 - Maps API (Google or Apple)
+- Firebase
+- pubdev
 
 ### Further extensions:
 - It could include a timer for hand-washing
@@ -31,3 +32,8 @@ Notifications/settings page
 
 It could have two different options for people who feel uncomfortable with the app tracking location. One: a more accurate, location tracking option. And two: a less accurate, time-based option. (Counts the number of germs based on time since the last hand wash?)
 
+## Contributions
+Ben Wagrez:  
+Luke Chen:  notifications
+Melody Liu:  germ tracker
+Orien Zhang:  UI, fact banners, 
