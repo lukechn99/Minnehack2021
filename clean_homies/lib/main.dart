@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:clean_homies/background_task.dart';
 import 'package:location/location.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'dart:async';
+import 'counter.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,58 +51,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _counter = 50000;
-  double _percent = 0;
   double latitude = 0;
   double longitude = 0;
-  Color progress = Colors.red;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter *= 1.0353;
-      _percent = _counter / 5000000;
-      if (_percent < 0.25) {
-        progress = Colors.green;
-      } else if (_percent < 0.5) {
-        progress = Colors.yellow;
-      } else if (_percent < 0.75) {
-        progress = Colors.orange;
-      } else {
-        if (_percent > 1) {
-          _percent = 1;
-        }
-        progress = Colors.red;
-      }
-    });
-  }
-
-  Timer timer;
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 60), (Timer t) => _incrementCounter());
-  }
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  void _washedHands() {
-    setState(() {
-      _counter = 50000;
-      _percent = 0;
-    });
-  }
 
   void _getLocation() async {
     // grab location
-    _incrementCounter();
 
     Location location = new Location();
     bool _serviceEnabled;
@@ -167,19 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CircularPercentIndicator(
-              radius: 150.0,
-              lineWidth: 13.0,
-              animation: true,
-              percent: _percent,
-              center: new Text(
-                _counter.toInt().toString() + " germs",
-                style:
-                new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-              ),
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: progress,
-            ),
+            GermCounter(),
             Text(
               '$latitude',
               style: Theme.of(context).textTheme.headline4,
@@ -187,24 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$longitude',
               style: Theme.of(context).textTheme.headline4,
-            ),
-            Padding(
-              padding: EdgeInsets.all(32.0)
-            ),
-            ElevatedButton(
-              child: Text('Washed Hands!'),
-              onPressed: () {
-                _washedHands();
-              },
             )
-          ],
-        ),
+          ]
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getLocation,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ) // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
