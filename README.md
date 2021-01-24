@@ -34,9 +34,9 @@ It could have two different options for people who feel uncomfortable with the a
 
 ### Contributions
 Ben Wagrez:  
-Luke Chen:  notifications
-Melody Liu:  germ tracker
-Orien Zhang:  UI, fact banners, 
+Luke Chen: notifications  
+Melody Liu: germ tracker  
+Orien Zhang: UI, fact banners  
 
 ### Resources
 https://medium.com/@mx_tino/flutter-themes-9cebc0fecd1d
