@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:clean_homies/background_task.dart';
+import 'package:location/location.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  double latitude = 0;
+  double longitude = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -58,6 +62,36 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  void _getLocation() async {
+    // grab location
+    Location location = new Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      latitude = _locationData.latitude;
+      longitude = _locationData.longitude;
     });
   }
 
@@ -102,11 +136,19 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Text(
+              '$latitude',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              '$longitude',
+              style: Theme.of(context).textTheme.headline4,
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _getLocation,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
