@@ -20,7 +20,7 @@ class GermCounterState extends State<GermCounter> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 60), (Timer t) => _germCounter());
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) => _germCounter());
   }
   @override
   void dispose() {
@@ -37,7 +37,7 @@ class GermCounterState extends State<GermCounter> {
 
   void _germCounter() {
     setState(() {
-      _counter *= 1.0353;
+      _counter *= 1.00347;
       _percent = _counter / 5000000;
       if (_percent < 0.25) {
         progress = Colors.green;
