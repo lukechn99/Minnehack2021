@@ -51,9 +51,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  double _counter = 1;
+  double _percent = 0;
   double latitude = 0;
   double longitude = 0;
+  Color progress = Colors.red;
 
   void _incrementCounter() {
     setState(() {
@@ -62,12 +64,32 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _counter *= 1.5;
+      _percent = _counter / 5000000;
+      if (_percent < 0.25) {
+        progress = Colors.green;
+      } else if (_percent < 0.5) {
+        progress = Colors.yellow;
+      } else if (_percent < 0.75) {
+        progress = Colors.orange;
+      } else {
+        if (_percent > 1) {
+          _percent = 1;
+        }
+        progress = Colors.red;
+      }
     });
+  }
+
+  void _washedHands() {
+    _counter = _counter * 0.01;
+    _percent = 0;
   }
 
   void _getLocation() async {
     // grab location
+    _incrementCounter();
+
     Location location = new Location();
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -131,17 +153,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CircularPercentIndicator(
-              radius: 120.0,
+              radius: 150.0,
               lineWidth: 13.0,
               animation: true,
-              percent: 0.7,
+              percent: _percent,
               center: new Text(
-                "# of germs",
+                _counter.toInt().toString() + " germs",
                 style:
                 new TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
               ),
               circularStrokeCap: CircularStrokeCap.round,
-              progressColor: Colors.red,
+              progressColor: progress,
             ),
             Text(
               '$latitude',
@@ -151,6 +173,15 @@ class _MyHomePageState extends State<MyHomePage> {
               '$longitude',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Padding(
+              padding: EdgeInsets.all(32.0)
+            ),
+            ElevatedButton(
+              child: Text('Washed Hands!'),
+              onPressed: () {
+                _washedHands();
+              },
+            )
           ],
         ),
       ),
